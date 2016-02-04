@@ -39,6 +39,9 @@ import java.util.Arrays;
 public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
+    private String zipCode = "22812";
+    private String units = "imperial";
+    private int numDays = 10;
 
     public ForecastFragment() {
     }
@@ -107,17 +110,18 @@ public class ForecastFragment extends Fragment {
         ListView listView = (ListView)rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
+
+
         return rootView;
     }
+
+
 
     //@Override
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
         private final String API_KEY = "fbdda77527441934deacec52b2167fab";
-        private String zipCode = "22812";
-        private final String units = "imperial";
-        private final int numDays = 10;
 
         protected String[] doInBackground(String... params) {
 
@@ -307,7 +311,7 @@ public class ForecastFragment extends Fragment {
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
-            
+
             return resultStrs;
 
         }
