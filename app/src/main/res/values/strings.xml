@@ -7,4 +7,21 @@
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_settings_detail">SettingsActivity</string>
+    <string name="pref_location_label">Enter Zip Code</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_default" translatable="false">22812</string>
+    
+    <string name="pref_unit_label">Units</string>
+    <string name="pref_unit_key" translatable="false">units</string>
+    
+    <string-array name="Units">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="units">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+    
 </resources>
+
