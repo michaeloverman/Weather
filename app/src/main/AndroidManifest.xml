@@ -26,6 +26,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.overman.weather.app.MainActivity" />
         </activity>
+        <activity android:name="com.example.android.sunshine.app.SettingsActivity"
+            android:label="@string/title_settings_detail"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
     </application>
 
 </manifest>
