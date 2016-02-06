@@ -1,5 +1,6 @@
 package com.overman.weather.app;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.io.*;
 import java.net.*;
 
+import com.example.android.sunshine.app.SettingsActivity;
 import com.overman.weather.app.ForecastFragment;
 
 
@@ -47,8 +49,9 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
