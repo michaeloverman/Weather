@@ -15,6 +15,6 @@
         android:key="@string/pref_unit_key"
         android:entries="@array/Units"
         android:entryValues="@array/units"
-        android:defaultValue="Imperial" />
+        android:defaultValue="metric" />
 
 </PreferenceScreen>

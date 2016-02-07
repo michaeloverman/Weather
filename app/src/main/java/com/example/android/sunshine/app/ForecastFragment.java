@@ -47,7 +47,7 @@ public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
     private String zipCode = "22812";
-    private String units = "imperial";
+    private String units = "metric";
     private int numDays = 10;
     private final String LOG_TAG = this.getClass().toString();
 
@@ -80,10 +80,10 @@ public class ForecastFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = prefs.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
-        String prefUnits = prefs.getString(getString(R.string.pref_unit_key),
-                units);
+        //String prefUnits = prefs.getString(getString(R.string.pref_unit_key),
+        //        units);
         //    Log.d(LOG_TAG, location);
-        fetch.execute(location, prefUnits);
+        fetch.execute(location);
 
     }
 
@@ -97,33 +97,13 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // fake data array
-        String[] forecastArray = {
-                "Today - Sunny - 86/59",
-                "Tomorrow - Mellow - 86/59",
-                "Monday - Juicy - 86/59",
-                "Tuesday - Cloudy - 86/59",
-                "Wednesday - Despondent - 86/59",
-                "Thursday - Miserable - 86/59",
-                "Friday - Somewhat Melancholy - 86/59",
-                "Saturday - Sheepish, with a touch of drama - 86/59",
-                "Sunday - Rain, rain, rain - 86/59",
-                "Wednesday - Despondent - 86/59",
-                "Thursday - Miserable - 86/59",
-                "Friday - Somewhat Melancholy - 86/59",
-                "Saturday - Sheepish, with a touch of drama - 86/59",
-                "Sunday - Rain, rain, rain - 86/59"
-        };
 
-        ArrayList<String> weekForecast = new ArrayList<String>(
-                Arrays.asList(forecastArray)
-        );
 
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),                          //current context
                 R.layout.list_item_forecast,            //id of list item layout
                 R.id.list_item_forecast_textview,       //id of textview
-                weekForecast                            //data
+                new ArrayList<String>()                            //data
         );
 
 
@@ -165,7 +145,7 @@ public class ForecastFragment extends Fragment {
             }
 
             zipCode = params[0];
-            units = params[1];
+            //units = params[1];
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -193,11 +173,6 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter("cnt", Integer.toString(numDays))
                         .appendQueryParameter("appid", API_KEY);
                 URL url = new URL(builder.build().toString());
-
-
-
-
-
 
             //    URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=22812&mode=json&units=metric&cnt=10&appid=fbdda77527441934deacec52b2167fab");
 
@@ -269,8 +244,16 @@ public class ForecastFragment extends Fragment {
         /**
          * Prepare the weather high/lows for presentation.
          */
-        private String formatHighLows(double high, double low) {
+        private String formatHighLows(double high, double low, String unitPref) {
             // For presentation, assume the user doesn't care about tenths of a degree.
+
+            // If imperial preferred, convert metric
+            if(unitPref.equals("imperial")) {
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            }
+
+            // round to nearest whole degree
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
@@ -317,6 +300,11 @@ public class ForecastFragment extends Fragment {
             dayTime = new Time();
 
             String[] resultStrs = new String[numDays];
+
+            // Get user units preference
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitPref = prefs.getString(getString(R.string.pref_unit_key), units);
+
             for(int i = 0; i < weatherArray.length(); i++) {
                 // For now, using the format "Day, description, hi/low"
                 String day;
@@ -344,7 +332,7 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
+                highAndLow = formatHighLows(high, low, unitPref);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
