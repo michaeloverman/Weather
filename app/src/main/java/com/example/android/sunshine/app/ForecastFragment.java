@@ -5,9 +5,11 @@ package com.overman.weather.app;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -20,9 +22,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.android.sunshine.app.DetailActivity;
+import com.example.android.sunshine.app.SettingsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +49,7 @@ public class ForecastFragment extends Fragment {
     private String zipCode = "22812";
     private String units = "imperial";
     private int numDays = 10;
+    private final String LOG_TAG = this.getClass().toString();
 
     public ForecastFragment() {
     }
@@ -67,11 +70,27 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask fetch = new FetchWeatherTask();
-            fetch.execute("22812");
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void updateWeather() {
+        FetchWeatherTask fetch = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        String prefUnits = prefs.getString(getString(R.string.pref_unit_key),
+                units);
+        //    Log.d(LOG_TAG, location);
+        fetch.execute(location, prefUnits);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
     }
 
     @Override
@@ -146,6 +165,7 @@ public class ForecastFragment extends Fragment {
             }
 
             zipCode = params[0];
+            units = params[1];
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
