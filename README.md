@@ -1,5 +1,5 @@
 My version of the Weather app built in Udacity Android course. Based on their version of Sunshine.
-I am trying to do all the coding myself - that is, not just taking their code and reading it. But I stated with the very first branch of their code. Thus their README below.
+I am trying to do all the coding myself - that is, not just taking their code and reading it. But I started with the very first branch of their code. Thus their README below.
 
 
 Sunshine
