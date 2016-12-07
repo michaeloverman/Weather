@@ -136,7 +136,7 @@ public class ForecastFragment extends Fragment {
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
-        private final String API_KEY = "fbdda77527441934deacec52b2167fab";
+        private final String API_KEY = "DELETED FOR SECURITY REASONS"; // Put your own API key here.
 
         protected String[] doInBackground(String... params) {
 
